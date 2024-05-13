@@ -3,7 +3,7 @@ import random
 import json
 
 host = '127.0.0.1'
-port = 2244
+port = 5555
 banner = """
 == Guessing Game ==
 
@@ -24,8 +24,8 @@ def generate_random_int(difficulty):
         return random.randint(1, 500)
 
 def update_leaderboard(name, score, difficulty, leaderboard):
-    leaderboard.append({"Name": name, "Score": score, "Difficulty": difficulty})
-    leaderboard.sort(key=lambda x: x["Score"])
+    leaderboard.append({"name": name, "score": score, "difficulty": difficulty})
+    leaderboard.sort(key=lambda x: x["score"])
     return leaderboard[:10]
 
 def save_leaderboard(leaderboard):
@@ -39,22 +39,21 @@ def load_leaderboard():
     except FileNotFoundError:
         return []
 
-# Initialize the socket object
+# Initialize socket object
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host, port))
 s.listen(5)
 
-print(f"Server is listening on port {port}")
-
+print(f"server is listening on port {port}")
 guessme = 0
 conn = None
 leaderboard = load_leaderboard()
 
 while True:
     if conn is None:
-        print("Waiting for connection..")
+        print("waiting for connection..")
         conn, addr = s.accept()
-        print(f"New client: {addr[0]}")
+        print(f"new client: {addr[0]}")
         conn.sendall(banner.encode())
     else:
         client_input = conn.recv(1024).decode().strip()
