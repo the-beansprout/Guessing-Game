@@ -1,7 +1,7 @@
 import socket
 
 host = "localhost"
-port = 2244
+port = 5555
 
 while True:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
