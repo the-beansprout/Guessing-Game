@@ -1,17 +1,19 @@
-
 import socket
 import random
 import json
 
-host = '127.0.2.1'
+host = '127.0.0.1'
 port = 2244
 banner = """
-== Guessing Game v1.0 ==
+== Guessing Game ==
+
+Unlock the Mystery: Guess the Number!
+
 Choose difficulty level:
 a - Easy (1-50)
 b - Medium (1-100)
 c - Hard (1-500)
-Enter the letter then press enter:"""
+Enter the letter then press Enter:"""
 
 def generate_random_int(difficulty):
     if difficulty == 'a':
@@ -22,8 +24,8 @@ def generate_random_int(difficulty):
         return random.randint(1, 500)
 
 def update_leaderboard(name, score, difficulty, leaderboard):
-    leaderboard.append({"name": name, "score": score, "difficulty": difficulty})
-    leaderboard.sort(key=lambda x: x["score"])
+    leaderboard.append({"Name": name, "Score": score, "Difficulty": difficulty})
+    leaderboard.sort(key=lambda x: x["Score"])
     return leaderboard[:10]
 
 def save_leaderboard(leaderboard):
@@ -43,13 +45,14 @@ s.bind((host, port))
 s.listen(5)
 
 print(f"Server is listening on port {port}")
+
 guessme = 0
 conn = None
 leaderboard = load_leaderboard()
 
 while True:
     if conn is None:
-        print("waiting for connection..")
+        print("Waiting for connection..")
         conn, addr = s.accept()
         print(f"New client: {addr[0]}")
         conn.sendall(banner.encode())
